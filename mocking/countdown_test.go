@@ -5,10 +5,19 @@ import (
 	"testing"
 )
 
+type ObservableSleeper struct {
+	Calls int
+}
+
+func (s *ObservableSleeper) Sleep() {
+	s.Calls++
+}
+
 func TestCountdown(t *testing.T) {
 	buffer := &bytes.Buffer{}
+	observableSleeper := &ObservableSleeper{}
 
-	Countdown(buffer)
+	Countdown(buffer, observableSleeper)
 
 	got := buffer.String()
 	want := `3

@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	Countdown(os.Stdout)
+	Countdown(os.Stdout, &DefaultSleeper{})
 }
