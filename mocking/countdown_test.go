@@ -6,14 +6,6 @@ import (
 	"testing"
 )
 
-type ObservableSleeper struct {
-	Calls int
-}
-
-func (s *ObservableSleeper) Sleep() {
-	s.Calls++
-}
-
 type ObservableCountdownOperations struct {
 	Calls []string
 }
@@ -31,20 +23,22 @@ const write = "write"
 const sleep = "sleep"
 
 func TestCountdown(t *testing.T) {
-	buffer := &bytes.Buffer{}
-	observableSleeper := &ObservableSleeper{}
+	t.Run("prints 3 to Go!", func(t *testing.T) {
+		buffer := &bytes.Buffer{}
+		observableSleeper := &ObservableCountdownOperations{}
 
-	Countdown(buffer, observableSleeper)
+		Countdown(buffer, observableSleeper)
 
-	got := buffer.String()
-	want := `3
+		got := buffer.String()
+		want := `3
 2
 1
 Go!`
 
-	if got != want {
-		t.Errorf("got %q want %q", got, want)
-	}
+		if got != want {
+			t.Errorf("got %q want %q", got, want)
+		}
+	})
 
 	t.Run("sleep before every print", func(t *testing.T) {
 		observableSleeperPrinter := &ObservableCountdownOperations{}
