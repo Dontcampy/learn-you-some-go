@@ -20,6 +20,23 @@ func (d *DefaultSleeper) Sleep() {
 	time.Sleep(1 * time.Second)
 }
 
+type ConfigurableSleeper struct {
+	duration time.Duration
+	sleep    func(duration time.Duration)
+}
+
+func (c *ConfigurableSleeper) Sleep() {
+	c.sleep(c.duration)
+}
+
+type ObservableTime struct {
+	durationSlept time.Duration
+}
+
+func (s *ObservableTime) Sleep(duration time.Duration) {
+	s.durationSlept = duration
+}
+
 func Countdown(out io.Writer, sleeper Sleeper) {
 	for i := countdownStart; i > 0; i-- {
 		sleeper.Sleep()
